@@ -30,13 +30,14 @@
 3. Логику fetch поправил следующим образом:
   - Нашел что за проверку кэша отвечает функция needStoreForOffline()
   - А в целом за логику обработки запроса  - вот эти строчки кода:
-    if (needStoreForOffline(cacheKey)) {
+
+    ``` if (needStoreForOffline(cacheKey)) {
         response = caches.match(cacheKey)
           .then(cacheResponse => cacheResponse || fetchAndPutToCache(cacheKey, event.request));
         } else {
             response = fetchWithFallbackToCache(event.request);
             }
-        event.respondWith(response);
+        event.respondWith(response); ```
   - Дальше осталось только понять, что делает функция fetchAndPutToCache и оказалось, что если needStoreForOffline() возвращает true, то достаточно просто вызвать функцию fetchAndPutToCache, чтобы взять ресурс из сети и положить его в кэш.
 
 # Ответы на вопросы
