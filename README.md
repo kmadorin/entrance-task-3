@@ -28,8 +28,8 @@
 2. Бросилось в глаза значение переменной CACHE_VERSION = "1.0.0 - broken". Посмотрел все функции, где она используется и выяснил, что если обновить ее значение, то это решит проблему с некорректным обновлением статики из папок vendor и assets. Делается это в функции deleteObsoleteCaches() проверкой версии кэша.
 
 3. Логику fetch поправил следующим образом:
-  1. Нашел что за проверку кэша отвечает функция needStoreForOffline()
-  2. А в целом за логику обработки запроса  - вот эти строчки кода:
+  - Нашел что за проверку кэша отвечает функция needStoreForOffline()
+  - А в целом за логику обработки запроса  - вот эти строчки кода:
     if (needStoreForOffline(cacheKey)) {
         response = caches.match(cacheKey)
           .then(cacheResponse => cacheResponse || fetchAndPutToCache(cacheKey, event.request));
@@ -37,7 +37,7 @@
             response = fetchWithFallbackToCache(event.request);
             }
         event.respondWith(response);
-  3. Дальше осталось только понять, что делает функция fetchAndPutToCache и оказалось, что если needStoreForOffline() возвращает true, то достаточно просто вызвать функцию fetchAndPutToCache, чтобы взять ресурс из сети и положить его в кэш.
+  - Дальше осталось только понять, что делает функция fetchAndPutToCache и оказалось, что если needStoreForOffline() возвращает true, то достаточно просто вызвать функцию fetchAndPutToCache, чтобы взять ресурс из сети и положить его в кэш.
 
 # Ответы на вопросы
   1. Вопрос №1: зачем нужен этот вызов?, + Вопрос №2: зачем нужен этот вызов?
