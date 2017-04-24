@@ -4,9 +4,9 @@
  * Сервис-воркер, обеспечивающий оффлайновую работу избранного
  */
 
-const CACHE_VERSION = '1.0.0-broken';
+const CACHE_VERSION = '1.0.1';
 
-importScripts('../vendor/kv-keeper.js-1.0.4/kv-keeper.js');
+importScripts('vendor/kv-keeper.js-1.0.4/kv-keeper.js');
 
 
 self.addEventListener('install', event => {
@@ -38,8 +38,7 @@ self.addEventListener('fetch', event => {
 
     let response;
     if (needStoreForOffline(cacheKey)) {
-        response = caches.match(cacheKey)
-            .then(cacheResponse => cacheResponse || fetchAndPutToCache(cacheKey, event.request));
+        response = fetchAndPutToCache(cacheKey, event.request);;
     } else {
         response = fetchWithFallbackToCache(event.request);
     }
@@ -127,7 +126,8 @@ function deleteObsoleteCaches() {
 function needStoreForOffline(cacheKey) {
     return cacheKey.includes('vendor/') ||
         cacheKey.includes('assets/') ||
-        cacheKey.endsWith('jquery.min.js');
+        cacheKey.endsWith('jquery.min.js') ||
+        cacheKey.includes('gifs.html');
 }
 
 // Скачать и добавить в кеш
